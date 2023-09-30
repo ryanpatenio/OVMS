@@ -41,6 +41,7 @@ class PartiesService{
         ->crossJoin('ballots')
         ->select('parties.party_id', 'ballots.ballot_id', 'parties.party_name', 'ballots.ballot_name')
         ->where('parties.ballot_id','=',DB::raw('ballots.ballot_id'))
+        ->where('parties.status','=',0)
         ->get();
 
       return $party;
@@ -53,6 +54,31 @@ class PartiesService{
         }
         return $this->StatusResponse->status('error_request',400);
 
+    }
+    public function getPartyByID($party_id){
+        if($party_id != null){
+            $find = DB::table('parties')
+            ->crossJoin('ballots')
+            ->select('ballots.ballot_id','parties.party_id','parties.party_name','ballots.ballot_name')
+            ->where('parties.ballot_id','=',DB::raw('ballots.ballot_id'))
+            ->where('parties.party_id',$party_id)
+            ->where('parties.status','=',0)
+            ->get(['party_id','party_name','ballot_id']);
+
+
+           return response()->json([
+            'data'=>$find,
+           ]);
+        }
+        return $this->StatusResponse->status('error_find',400);
+    }
+    public function UpdateParty($request){
+       $update = Parties::where('party_id',$request->party_id)
+       ->update($request->only('party_name','ballot_id'));
+       if($update){
+        return $this->StatusResponse->status('success',200);
+       }
+       return $this->StatusResponse->status('proccess_error',422);
     }
 }
 

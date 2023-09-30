@@ -117,6 +117,10 @@ Route::group(['middleware'=>'role:ballotCreator','prefix'=>'ballotAdmin'],functi
 
         Route::post('/party-page/add',[PartiesController::class,'AddParty'])
         ->name('party.add');
+        Route::post('/party-page/edit',[PartiesController::class,'EditParty'])
+        ->name('edit.party');
+        Route::post('/party-page/update',[PartiesController::class,'Update'])
+        ->name('update.party');
         //end of Party Routes
 
         //Route for Position

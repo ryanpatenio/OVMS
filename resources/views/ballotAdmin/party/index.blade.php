@@ -42,10 +42,9 @@
                                 <td>{{ $party->ballot_name }}</td>
 
                                 <td>
-                                    <a href="#" type="button" data-bs-toggle="modal"
-                                        data-bs-target="#UpdatePartyModal" class="btn btn-warning bi bi-pencil btn-sm"
-                                        id="editParty" data-id="">
-                                        Modify</a>
+                                    <button type="button" id="edit_party_button" data-id="{{ $party->party_id }}"
+                                        class="btn btn-warning bi bi-pencil btn-sm">
+                                        Modify</button>
                                     <a href="{{ route('view.party') }}" type="button"
                                         class="btn btn-primary bi bi-search btn-sm">
                                         View</a>
@@ -126,32 +125,42 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form>
-                            <div class="col-lg-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="row mb-2">
-                                            <label for="candidates name">Party Name</label>
-                                            <input type="text" class="form-control" placeholder="Candidates Name..."
-                                                required value="Ryan Wong">
-                                        </div>
-                                        <div class="row mb-2">
-                                            <label for="candidates name">Ballot Name</label>
-                                            <select name="ballotsName" id="" class="form-select">
-                                                <option value="">Sun's Company</option>
-                                                <option value="">Psy Company</option>
-                                            </select>
+                        <form method="POST" id="edit_party_form">
+                            @csrf
+                            @can('manage-ballots')
+                                <input type="hidden" id="hidden_id" name="party_id">
+                                <div class="col-lg-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row mb-2">
+                                                <label for="party name">Party Name</label>
+                                                <input type="text" name="party_name" id="edit_party_name"
+                                                    class="form-control" placeholder="Party Name..." required>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <label for="ballot name">Ballot Name</label>
+                                                <select name="ballot_id" class="form-select">
+                                                    <option value="" id="edit_ballot_id"></option>
+                                                    @forelse ($ballotData as $ballot)
+                                                        <option value="{{ $ballot->ballot_id }}">{{ $ballot->ballot_name }}
+                                                        </option>
+                                                    @empty
+                                                    @endforelse
+
+
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endcan
 
-                        </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary close" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Update</button>
+                        <input type="submit" class="btn btn-primary" value="Update">
                     </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -191,10 +200,70 @@
                         }
 
                     });
-                })
+                });
+
+
+                $(document).on('click', '#edit_party_button', function(e) {
+                    e.preventDefault();
+                    $('#hidden_id').val('');
+                    let p_ID = $(this).attr('data-id');
+
+                    $.ajax({
+                        url: '{{ route('edit.party') }}',
+                        method: 'post',
+                        data: {
+                            p_ID: p_ID
+                        },
+                        dataType: 'json',
+
+                        success: function(resp) {
+                            //console.log(resp)
+                            $('#hidden_id').val(resp.data[0].party_id)
+                            $('#edit_party_name').val(resp.data[0].party_name)
+                            $('#edit_ballot_id').val(resp.data[0].ballot_id)
+                            $('#edit_ballot_id').text(resp.data[0].ballot_name)
+                            $('#UpdatePartyModal').modal('show');
+                        },
+                        error: function(xhr, status) {
+                            console.log(xhr.responseText)
+                        }
+
+                    });
+                });
+
+
+                $(document).on('submit', '#edit_party_form', function(e) {
+                    e.preventDefault();
+
+                    $.ajax({
+                        url: '{{ route('update.party') }}',
+                        method: 'POST',
+                        data: $(this).serialize(),
+                        dataType: 'json',
+
+                        success: function(resp) {
+                            // console.log(resp)
+                            $('#edit_party_form')[0].reset()
+                            $('#UpdatePartyModal').modal('hide');
+                            if (resp.message == 'success') {
+                                message('Party Updated successfully!', 'success')
+                            }
+
+                        },
+                        error: function(xhr, status) {
+                            // console.log(xhr)
+                            let err = JSON.parse(xhr.responseText);
+                            if (err.message == 'proccess_error') {
+                                msg('Oops! Unexpeted Error! error 422', 'error');
+                            }
+                        }
+                    })
+                });
 
 
             });
+
+
 
             const clearError = () => {
                 $('#err_party_name').text('');

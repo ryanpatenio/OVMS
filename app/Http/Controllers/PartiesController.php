@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\BallotService\PartiesService;
 use App\Http\Requests\PartyFormRequest;
+use App\Http\Requests\UpdatePartyRequest;
 
 class PartiesController extends Controller
 {
@@ -38,6 +39,19 @@ class PartiesController extends Controller
 
     }
 
+    public function EditParty(Request $request){
+        if(Gate::denies('manage-ballots')){
+            abort(403);
+        }
+        return $this->PartiesService->getPartyByID($request->p_ID);
+
+    }
+    public function Update(UpdatePartyRequest $request){
+        if(Gate::denies('manage-ballots')){
+            abort(403);
+        }
+        return $this->PartiesService->UpdateParty($request);
+    }
 
 
 }
