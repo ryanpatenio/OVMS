@@ -112,7 +112,7 @@ Route::group(['middleware'=>'role:ballotCreator','prefix'=>'ballotAdmin'],functi
         //Party Routes
         Route::get('/party-page',[PartiesController::class,'PartyIndex'])
         ->name('party.index');
-        Route::get('/view-party-page',[PartiesController::class,'viewParty'])
+        Route::get('/view-party-page/{party_id}/view',[PartiesController::class,'viewParty'])
         ->name('view.party');
 
         Route::post('/party-page/add',[PartiesController::class,'AddParty'])
@@ -121,6 +121,13 @@ Route::group(['middleware'=>'role:ballotCreator','prefix'=>'ballotAdmin'],functi
         ->name('edit.party');
         Route::post('/party-page/update',[PartiesController::class,'Update'])
         ->name('update.party');
+
+        Route::post('/party-page/getListOfCandidatesNoParty',[partiesController::class,'getList'])
+        ->name('get.partyList');
+        Route::post('/party-page/storeCandidatesToParty',[PartiesController::class,'storeCandidatesToParty'])
+        ->name('store.candidatesToParty');
+        Route::post('/party-page/removeCandidate-To-Party',[PartiesController::class,'removeCandidate'])
+        ->name('remove.candidate');
         //end of Party Routes
 
         //Route for Position

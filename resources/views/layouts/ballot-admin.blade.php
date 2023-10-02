@@ -9,6 +9,9 @@
     <title>OVMS</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
+    {{-- if error need to remove this dataTables link online cdn --}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Favicons -->
     <link rel="shortcut icon" href="https://cdn.pixabay.com/photo/2014/04/02/10/40/check-304167_1280.png">

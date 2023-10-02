@@ -45,7 +45,7 @@
                                     <button type="button" id="edit_party_button" data-id="{{ $party->party_id }}"
                                         class="btn btn-warning bi bi-pencil btn-sm">
                                         Modify</button>
-                                    <a href="{{ route('view.party') }}" type="button"
+                                    <a href="{{ route('view.party', $party->party_id) }}" type="button"
                                         class="btn btn-primary bi bi-search btn-sm">
                                         View</a>
                                 </td>
@@ -137,19 +137,7 @@
                                                 <input type="text" name="party_name" id="edit_party_name"
                                                     class="form-control" placeholder="Party Name..." required>
                                             </div>
-                                            <div class="row mb-2">
-                                                <label for="ballot name">Ballot Name</label>
-                                                <select name="ballot_id" class="form-select">
-                                                    <option value="" id="edit_ballot_id"></option>
-                                                    @forelse ($ballotData as $ballot)
-                                                        <option value="{{ $ballot->ballot_id }}">{{ $ballot->ballot_name }}
-                                                        </option>
-                                                    @empty
-                                                    @endforelse
 
-
-                                                </select>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -170,6 +158,7 @@
         <script>
             $(document).ready(function() {
 
+                //add Party
                 $(document).on('submit', '#addPartyForm', function(e) {
                     e.preventDefault();
 
@@ -202,7 +191,7 @@
                     });
                 });
 
-
+                //edit Party
                 $(document).on('click', '#edit_party_button', function(e) {
                     e.preventDefault();
                     $('#hidden_id').val('');
@@ -231,33 +220,47 @@
                     });
                 });
 
-
+                //Update Party
                 $(document).on('submit', '#edit_party_form', function(e) {
                     e.preventDefault();
 
-                    $.ajax({
-                        url: '{{ route('update.party') }}',
-                        method: 'POST',
-                        data: $(this).serialize(),
-                        dataType: 'json',
+                    swal({
+                        title: "Are you sure you want Update this Party?",
+                        text: 'Please Click the `OK` Button to Continue!',
+                        icon: "info",
+                        buttons: true,
+                        dangerMode: true,
+                    }).then((willconfirmed) => {
 
-                        success: function(resp) {
-                            // console.log(resp)
-                            $('#edit_party_form')[0].reset()
-                            $('#UpdatePartyModal').modal('hide');
-                            if (resp.message == 'success') {
-                                message('Party Updated successfully!', 'success')
-                            }
+                        if (willconfirmed) {
 
-                        },
-                        error: function(xhr, status) {
-                            // console.log(xhr)
-                            let err = JSON.parse(xhr.responseText);
-                            if (err.message == 'proccess_error') {
-                                msg('Oops! Unexpeted Error! error 422', 'error');
-                            }
+                            $.ajax({
+                                url: '{{ route('update.party') }}',
+                                method: 'POST',
+                                data: $(this).serialize(),
+                                dataType: 'json',
+
+                                success: function(resp) {
+                                    // console.log(resp)
+                                    $('#edit_party_form')[0].reset()
+                                    $('#UpdatePartyModal').modal('hide');
+                                    if (resp.message == 'success') {
+                                        message('Party Updated successfully!', 'success')
+                                    }
+
+                                },
+                                error: function(xhr, status) {
+                                    // console.log(xhr)
+                                    let err = JSON.parse(xhr.responseText);
+                                    if (err.message == 'proccess_error') {
+                                        msg('Oops! Unexpeted Error! error 422', 'error');
+                                    }
+                                }
+                            })
                         }
-                    })
+
+                    });
+
                 });
 
 

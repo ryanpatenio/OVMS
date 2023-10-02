@@ -27,14 +27,20 @@ class PartiesController extends Controller
 
         return view('ballotAdmin.party.index',compact('ballotData','parties'));
     }
-    public function viewParty(){
+    public function viewParty($party_id){
         if(Gate::denies('manage-ballots')){
             abort(403);
         }
-        return view('ballotAdmin.party.view-party');
+        $getSelectedParty = $this->PartiesService::getPartyByIDView($party_id);
+        $PartyMembers = $this->PartiesService::getAllSelectedParty($party_id);
+
+       return view('ballotAdmin.party.view-party',compact('getSelectedParty','PartyMembers'));
     }
 
     public function AddParty(PartyFormRequest $request){
+        if(Gate::denies('manage-ballots')){
+            abort(403);
+        }
         return $this->PartiesService->StoreParty($request);
 
     }
@@ -53,5 +59,26 @@ class PartiesController extends Controller
         return $this->PartiesService->UpdateParty($request);
     }
 
+    public function getList(Request $request){
+        if(Gate::denies('manage-ballots')){
+            abort(403);
+        }
+
+        return $this->PartiesService->getAllCandidatesNoParty($request->ballot_ID);
+    }
+
+    public function storeCandidatesToParty(Request $request){
+        if(Gate::denies('manage-ballots')){
+            abort(403);
+        }
+        return $this->PartiesService->addCandidateToParty($request);
+    }
+
+    public function removeCandidate(Request $request){
+        if(Gate::denies('manage-ballots')){
+            abort(403);
+        }
+        return  $this->PartiesService->removeCandidateInParty($request->candidate_id);
+    }
 
 }

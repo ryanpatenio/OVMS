@@ -24,14 +24,14 @@ class UpdatePartyRequest extends FormRequest
         return [
             'party_id' => 'required',
             'party_name'=>['required'],
-            'ballot_id' => 'required',
+
         ];
     }
     public function messages(){
         return [
             'party_id.required' => 'party_id_err',
             'party_name.required' => 'name_required',
-            'ballot_id.required' => 'ballot_id_null'
+
         ];
     }
 
