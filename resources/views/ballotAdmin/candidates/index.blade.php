@@ -205,7 +205,11 @@
                                             <span class="text-success" id="positionStatus2"></span>
                                         </div>
                                         <div class="row">
+                                            <label for="" class="mt-2"><strong>Current Party :
+                                                </strong><strong style="color: rgb(238, 9, 116);"><label for=""
+                                                        id="current-party"></label></strong></label>
                                             <label for="select Position">Party (Optional)</label>
+
                                             <select name="party_id" id="Parties2" class="form-select Party-x2">
                                                 <option value="" id="party-edit-first"></option>
                                             </select>
@@ -459,7 +463,7 @@
                     //edit new candidates
                     $(document).on('click', '#editCandidates', function(e) {
                         e.preventDefault();
-                        $('#editCandidateForm')[0].reset();
+                        resetAllForm();
 
                         let ID = $(this).attr('data-id');
                         $.ajax({
@@ -471,7 +475,9 @@
                             dataType: 'json',
 
                             success: function(data) {
-                                // console.log(data)
+                                //console.log(data)
+
+
                                 $('#candidate-id').val(data.data.candidate_id);
 
                                 $('#edit-candidate-name').val(data.data.candidate_name)
@@ -483,11 +489,14 @@
 
                                 if (data.data.party_id != null) {
                                     $('#party-edit-first').val(data.data.party_id);
-                                    $('#party-edit-first').text(data.data.party_name);
+                                    $('#current-party').text(data.data.party_name);
 
                                 } else {
+
                                     $('#party-edit-first').val('');
                                     $('#party-edit-first').text('Independent');
+                                    $('#current-party').text("Independent!");
+
                                 }
                                 $('#UpdateCandidatesModal').modal('show');
 
@@ -568,6 +577,14 @@
                 const resetAddModal = () => {
                     $('#addCandidatesModal').modal('hide');
                     $('#addCandidatesForm')[0].reset();
+                }
+                const resetAllForm = () => {
+                    $('#addCandidatesForm')[0].reset();
+                    $('#editCandidateForm')[0].reset();
+
+                    $('#Parties').html("");
+
+                    $('#Parties2').html("");
                 }
             </script>
         @endsection

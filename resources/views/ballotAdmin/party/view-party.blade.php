@@ -272,23 +272,46 @@
                     e.preventDefault();
                     let id = $(this).attr('data-id');
 
-                    $.ajax({
-                        url: '{{ route('remove.candidate') }}',
-                        method: 'POST',
-                        data: {
-                            candidate_id: id
-                        },
-                        datType: 'json',
+                    swal({
+                        title: "Are you sure you want Remove this Candidate in this Party?",
+                        text: 'Please Click the `OK` Button to Continue!',
+                        icon: "info",
+                        buttons: true,
+                        dangerMode: true,
+                    }).then((willconfirmed) => {
 
-                        success: function(resp) {
-                            console.log(resp)
-                        },
+                        if (willconfirmed) {
+                            $.ajax({
+                                url: '{{ route('remove.candidate') }}',
+                                method: 'POST',
+                                data: {
+                                    candidate_id: id
+                                },
+                                datType: 'json',
 
-                        error: function(xhr, status) {
-                            console.log(xhr.responseText)
+                                success: function(resp) {
+                                    // console.log(resp)
+                                    if (resp.message == 'success') {
+                                        message('Selected Candidate was Successfully Removed!',
+                                            'success');
+                                    }
+                                },
+
+                                error: function(xhr, status) {
+                                    //console.log(xhr.responseText)
+                                    let err = JSON.parse(xhr.responseText)
+                                    if (err.message == 'processing_error') {
+                                        msg('Oops! Unexpected Error! Request Failed!',
+                                            'error');
+                                    }
+                                }
+
+                            });
                         }
-
                     });
+
+
+
 
                 });
 

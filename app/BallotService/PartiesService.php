@@ -150,7 +150,14 @@ class PartiesService{
     }
 
     public function removeCandidateInParty($candidate_id){
-        return $candidate_id;
+       $setPartyIdToNull =  Candidates::where('candidate_id',$candidate_id)
+        ->update(['party_id'=> null]);
+
+        if($setPartyIdToNull){
+          return $this->StatusResponse->status('success',200);
+        }
+
+        return $this->StatusResponse->status('processing_error',422);
     }
 }
 
