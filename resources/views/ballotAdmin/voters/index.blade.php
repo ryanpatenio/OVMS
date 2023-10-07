@@ -36,7 +36,7 @@
                         <tr>
                             <td>1</td>
                             <td>Ryan Wong</td>
-                            <td>Suns Company Election</td>
+                            <td>Sun's Company Election</td>
 
                             <td>
                                 <a href="#" type="button" class="btn btn-warning bi bi-pencil" data-bs-toggle="modal"
