@@ -6,6 +6,9 @@
         <h1>Party Name : <strong
                 style="font-style: italic; color:rgb(5, 168, 5)">{{ $getSelectedParty->party_name }}</strong>
         </h1>
+        <h1 class="mt-2">Ballot Name : <strong
+                style="font-style: italic; color:rgb(5, 168, 5)">{{ $getSelectedParty->ballot_name }}</strong>
+        </h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('party.index') }}">Party Dashboard</a></li>

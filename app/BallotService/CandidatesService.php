@@ -30,6 +30,7 @@ class CandidatesService{
      ->select('candidates.candidate_id', 'candidates.candidate_name', 'positions.position_name', 'ballots.ballot_name')
      ->where('ballots.ballot_id','=',DB::raw('candidates.ballot_id'))
      ->where('candidates.position_id','=',DB::raw('positions.position_id'))
+     ->where('ballots.id',Auth::id())
      ->get();
 
      }

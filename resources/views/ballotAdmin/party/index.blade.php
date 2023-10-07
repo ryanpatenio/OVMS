@@ -23,9 +23,8 @@
                     <thead>
                         <tr>
                             <th>No.</th>
-                            <th>Party Name</th>
-
                             <th>Ballot Name</th>
+                            <th>Party Name</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -37,9 +36,8 @@
                         @forelse ($parties as $party)
                             <tr>
                                 <td>{{ $i }}</td>
-                                <td>{{ $party->party_name }}</td>
-
                                 <td>{{ $party->ballot_name }}</td>
+                                <td>{{ $party->party_name }}</td>
 
                                 <td>
                                     <button type="button" id="edit_party_button" data-id="{{ $party->party_id }}"

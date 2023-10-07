@@ -43,6 +43,7 @@ class PartiesService{
         ->select('parties.party_id', 'ballots.ballot_id', 'parties.party_name', 'ballots.ballot_name')
         ->where('parties.ballot_id','=',DB::raw('ballots.ballot_id'))
         ->where('parties.status','=',0)
+        ->where('ballots.id',Auth::id())
         ->get();
 
       return $party;

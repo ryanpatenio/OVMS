@@ -3,7 +3,10 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+
 use App\Models\User;
+
+
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -34,5 +37,10 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('can-vote',function(User $user){
             return $user->role == 3;
         });
+        // Gate::define('creator', function ($ballot,$user) {
+        //     return $user->id == $ballot->id;
+        // });
+
+
     }
 }

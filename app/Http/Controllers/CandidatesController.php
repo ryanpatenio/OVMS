@@ -20,13 +20,16 @@ class CandidatesController extends Controller
         $this->CandidatesService = $CandidatesService;
         $this->StatusResponse = $StatusResponse;
 
+
     }
     public function MyCandidatesIndex(){
         if(Gate::denies('manage-ballots')){
             abort(403);
         }
+
         $candidates = $this->CandidatesService->CandidatesData();
         $ballots = $this->CandidatesService->getAllBallotData();
+
         return view('ballotAdmin.candidates.index',compact('candidates','ballots'));
     }
 
