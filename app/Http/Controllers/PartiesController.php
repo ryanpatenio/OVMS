@@ -19,9 +19,6 @@ class PartiesController extends Controller
 
 
     public function PartyIndex(){
-        if(Gate::denies('manage-ballots')){
-            abort(403);
-        }
         $ballotData = $this->PartiesService::ShowBallot();
         $parties = $this->PartiesService::ShowParties();
 

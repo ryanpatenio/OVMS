@@ -37,6 +37,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('can-vote',function(User $user){
             return $user->role == 3;
         });
+        Gate::define('candidate',function(User $user){
+            return $user->role == 4;
+        });
         // Gate::define('creator', function ($ballot,$user) {
         //     return $user->id == $ballot->id;
         // });

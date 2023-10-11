@@ -13,12 +13,11 @@ return new class extends Migration
     {
         Schema::create('voters', function (Blueprint $table) {
             $table->id('voters_id');
-            $table->string('name');
-            $table->string('email');
-            $table->string('password');
-            $table->foreignId('ballot_id')->references('ballot_id')->on('ballots')->only('add','update');
+            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('ballot_id')->references('ballot_id')->on('ballots')->onDelete('cascade')->onUpdate('cascade');
             $table->integer('status')->default(0);
             $table->timestamps();
+
         });
     }
 

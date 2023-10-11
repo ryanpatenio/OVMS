@@ -95,8 +95,12 @@ Route::group(['middleware'=>'role:ballotCreator','prefix'=>'ballotAdmin'],functi
         //end of Candidates Routes
 
         //Voters Routes
-        Route::get('/voters-page',[BallotAdminController::class,'VotersIndex'])
+        Route::get('/voters-page',[VotersController::class,'VotersIndex'])
         ->name('voters.index');
+        Route::get('/voters-page-add',[VotersController::class,'AddVoters'])
+        ->name('voters.add');
+        Route::post('/voters-page-store',[VotersController::class,'Store'])
+        ->name('voter.store');
         //end of Voters Routes
 
         //Results Routes
@@ -164,15 +168,10 @@ Route::group(['middleware'=>'auth'],function(){
 
 // Route::get('/voters',[VotersController::class,'index'])->name('voters.index');
 
+//change it in the future
     Route::get('vote-now-page',[VotersController::class,'VoteNowPage'])
     ->name('vote.now.page');
 
-    Route::get('vote-now-page',[VotersController::class,'VoteNowPage'])
-  ->name('vote.now.page');
-
-    // Route::get('/update-ballot',function(){
-    //     return view('ballotAdmin.ballot.edit-ballot');
-    // });
     Route::get('/view-ballot',function(){
         return view('ballotAdmin.ballot.view-ballot');
     });

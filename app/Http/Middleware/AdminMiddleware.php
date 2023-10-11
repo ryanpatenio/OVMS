@@ -19,7 +19,10 @@ class AdminMiddleware
         //role
         //admin == 1
         //user -- ballot creator == 2
+        //voters = 3
+        //candidates = 4
         //user == 0 (default)
+
     // if(Auth::check()){
 
     //     if(Auth::user()->role == '1'){
@@ -35,7 +38,7 @@ class AdminMiddleware
     //     //not authenticated
     //     return redirect('/login')->with('message','log in first!');
     // }
-
+        //this is middleware
         if($role == 'admin' && auth()->user()->role != 1){
             abort(403);
         }
@@ -45,6 +48,10 @@ class AdminMiddleware
         if($role == 'voters' && auth()->user()->role != 3){
             abort(403);
         }
+        if($role == 'candidates' && auth()->user()->role != 4){
+            abort(403);
+        }
+
 
         return $next($request);
     }

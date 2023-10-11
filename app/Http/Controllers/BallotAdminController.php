@@ -45,11 +45,6 @@ class BallotAdminController extends Controller
     //end of MyBallot SideBar
 
 
-    //Voters Controllers
-    public function VotersIndex(){
-        return view('ballotAdmin.voters.index');
-    }
-    //end of Voters Controllers
 
     //Results Controller
     public function ResultsIndex(){
