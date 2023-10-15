@@ -50,6 +50,10 @@ class VotersController extends Controller
         return view('voters.vote-now');
     }
 
+    public function search(Request $request){
+        return $this->VotersService->searchCandidateByName($request->name);
+    }
+
 
 
 

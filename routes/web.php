@@ -101,6 +101,10 @@ Route::group(['middleware'=>'role:ballotCreator','prefix'=>'ballotAdmin'],functi
         ->name('voters.add');
         Route::post('/voters-page-store',[VotersController::class,'Store'])
         ->name('voter.store');
+
+        //Search Bar Candidates
+        Route::post('/voters-page/search',[VotersController::class,'search'])
+        ->name('search.input');
         //end of Voters Routes
 
         //Results Routes

@@ -57,6 +57,26 @@ class VotersService{
         return $this->StatusResponse->status('process_error',422);
     }
 
+    public function searchCandidateByName($name){
+        $trimName = trim($name);
+        if($name != null){
+            $search = DB::table('candidates')
+            ->crossJoin('ballots')
+            ->select('candidates.candidate_id', 'candidates.candidate_name')
+            ->where('candidates.ballot_id','=',DB::raw('ballots.ballot_id'))
+            ->where('ballots.id','=',2)
+            ->where ('candidates.candidate_name', 'LIKE', '%'. $trimName. '%')
+            ->get();
+
+            return response()->json([
+                'data'=>$search
+            ]);
+
+        }
+
+
+    }
+
 
 }
 
