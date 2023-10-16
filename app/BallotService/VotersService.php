@@ -1,6 +1,8 @@
 <?php
  namespace App\BallotService;
 
+
+ use App\Models\Candidates;
  use Illuminate\Support\Facades\Auth;
  use Illuminate\Support\Facades\DB;
  use App\Models\Voters;
@@ -18,15 +20,15 @@ class VotersService{
     }
 
     public function showAll(){
-        $data = DB::table('voters')
+        $data = DB::table('users')
         ->crossJoin('ballots')
-        ->crossJoin('users')
-        ->select('users.id', 'users.name', 'users.role', 'ballots.ballot_name')
-        ->where('voters.ballot_id','=',DB::raw('ballots.ballot_id'))
-        ->where('voters.user_id','=',DB::raw('users.id'))
+        ->crossJoin('voters')
+        ->select('users.id', 'users.name', 'ballots.ballot_name')
+        ->where('users.id','=',DB::raw('voters.user_id'))
+        ->where('ballots.ballot_id','=',DB::raw('voters.ballot_id'))
         ->where('ballots.id','=',Auth::id())
-        ->where('users.role','=',3)
-        ->where('ballots.publish_status','=',0)//it means this ballot not publish yet
+        ->whereIn('users.role',[3, 4])
+        ->where('ballots.publish_status','=',0)
         ->get();
 
         return $data;
@@ -64,7 +66,7 @@ class VotersService{
             ->crossJoin('ballots')
             ->select('candidates.candidate_id', 'candidates.candidate_name')
             ->where('candidates.ballot_id','=',DB::raw('ballots.ballot_id'))
-            ->where('ballots.id','=',2)
+            ->where('ballots.id','=',Auth::id())
             ->where ('candidates.candidate_name', 'LIKE', '%'. $trimName. '%')
             ->get();
 
@@ -74,6 +76,51 @@ class VotersService{
 
         }
 
+
+    }
+
+    public function findAndFetch($candidate_id){
+
+       $find =  Candidates::where('candidate_id',$candidate_id)
+        ->where('user_id',null)
+        ->first(['candidate_id','ballot_id','candidate_name']);
+
+        if($find){
+            //not already added in voters table
+            return response()->json([
+                'data'=>$find
+            ]);
+        }else{
+            //it means this candidate is already added in Voters table
+            return 0;
+        }
+    }
+
+    public function addCandidateAsVoters($request){
+        $id = User::create([
+            'name' => $request->candidate_name,
+            'email' => $request->email,
+            'contact'=> $request->contact,
+            'password' => $request->password,
+            'role' => 4
+        ])->id;
+        if($id){
+            $arrayInput = [
+                'user_id'=> $id,
+                'ballot_id'=> $request->ballot_id
+            ];
+            $saveToVoters = Voters::create($arrayInput);
+            if($saveToVoters){
+                $updateCandidateUserIdColumn = Candidates::where('candidate_id',$request->candidate_id)->update(['user_id'=> $id]);
+                if($updateCandidateUserIdColumn){
+                    return $this->StatusResponse->status('success',200);
+                }
+                return $this->StatusResponse->status('errorUpdateCandidate',400);
+            }
+            return $this->StatusResponse->status('errorSaveVoters',400);
+        }
+
+        return $this->StatusResponse->status('error',400);
 
     }
 

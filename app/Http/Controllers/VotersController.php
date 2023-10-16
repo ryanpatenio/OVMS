@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\BallotService\VotersService;
 use Illuminate\Http\Request;
 use App\BallotService\BallotService;
+use App\BallotService\VotersService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\VotersAddRequest;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\addCandidateToVotersRequest;
 
 
 class VotersController extends Controller
@@ -52,6 +53,14 @@ class VotersController extends Controller
 
     public function search(Request $request){
         return $this->VotersService->searchCandidateByName($request->name);
+    }
+
+    public function find(Request $request){
+        return $this->VotersService->findAndFetch($request->candidate_id);
+    }
+
+    public function addToVoter(addCandidateToVotersRequest $request){
+        return $this->VotersService->addCandidateAsVoters($request);
     }
 
 

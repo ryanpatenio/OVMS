@@ -113,6 +113,75 @@
         </form>
 
     </section>
+
+    <section class="add-Candidates-Modal">
+
+        <div class="modal fade modal-md" id="addCandidateModal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add This Candidates as Voters</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card">
+                            <div id="validation" class="alert alert-danger d-none">
+
+                                <ul id="error" class="text-danger">
+
+                                </ul>
+                            </div>
+                            <form id="addModalForm">
+                                @csrf
+                                <input type="hidden" name="ballot_id" value="" id="ballot_id">
+                                <input type="hidden" name="candidate_id" value="" id="candidate_id">
+
+
+                                <div class="col-lg-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row mb-2">
+                                                <label for="candidates edit name">Voters Name</label>
+                                                <input type="text" class="form-control" name="candidate_name"
+                                                    id="candidate_name" placeholder="Candidates Name..." required
+                                                    readonly>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <label for="Voters Edit Email">Email</label>
+                                                <input type="email" name="email" class="form-control"
+                                                    placeholder="Email..." required>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <label for="Voters Edit name">Default Temporary Password (@user123)</label>
+                                                <input type="password" name="password" class="form-control bi"
+                                                    value="@user123" required readonly>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <label for="Voters Edit name">Contact|Phone</label>
+                                                <input type="text" name="contact" maxlength="11"
+                                                    class="form-control bi" required placeholder="+63">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary close" data-bs-dismiss="modal">Close</button>
+                            <input type="submit" class="btn btn-primary" value="Add">
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+    </section>
 @endsection
 
 @section('scripts')
@@ -242,10 +311,78 @@
 
             $('#list').on('change', $.debounce(300, function(e) {
                 e.preventDefault();
+
+                //empty modal form
+                $('#addModalForm')[0].reset();
+
                 if (!$(this).val() == '') {
-                    alert('selected');
+                    let id = $(this).val();
+                    $.ajax({
+                        url: '{{ route('find.candidates') }}',
+                        method: 'POST',
+                        data: {
+                            candidate_id: id
+                        },
+                        dataType: 'json',
+
+                        success: function(resp) {
+                            //console.log(resp);
+                            if (resp != 0) {
+                                $('#ballot_id').val(resp.data.ballot_id)
+                                $('#candidate_id').val(resp.data.candidate_id)
+                                $('#candidate_name').val(resp.data.candidate_name)
+                                $('#addCandidateModal').modal('show');
+                            } else {
+                                msg('This Selected Candidate is already added!', 'error');
+                            }
+                        },
+
+                        error: function(xhr, status, error) {
+                            console.log(xhr.responseText)
+                        }
+                    });
                 }
             }));
+
+            $(document).on('submit', '#addModalForm', function(e) {
+                e.preventDefault();
+                $('#error').empty();
+                $.ajax({
+                    url: '{{ route('add.candidate.to.voter') }}',
+                    method: 'post',
+                    data: $(this).serialize(),
+                    dataType: 'json',
+
+                    success: function(resp) {
+                        //console.log(resp)
+                        $('#validation').addClass('d-none');
+                        $('#addModalForm').modal('hide');
+                        if (resp.message == 'success') {
+                            msgRedirect('Candidate Successfully added as Voters', 'success',
+                                '{{ route('voters.index') }}');
+
+                        }
+                    },
+
+                    error: function(xhr, status, error) {
+                        console.log(xhr.responseText);
+                        $('#validation').removeClass('d-none');
+                        $.each(xhr.responseJSON.errors, function(key, value) {
+                            $('#error').append(
+                                '<li>' + value +
+                                '</li>'
+
+                            );
+
+                        });
+                    }
+
+
+                });
+
+
+
+            });
 
         });
     </script>

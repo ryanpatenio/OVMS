@@ -12,7 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('candidates', function (Blueprint $table) {
-            $table->foreignId('party_id')->references('party_id')->on('parties')->nullable()->change();
+            $table->unsignedBigInteger('party_id')->nullable();
+            $table->foreign('party_id')->references('party_id')->on('parties')->onDelete('cascade')->onUpdate('cascade');
+
+            // $table->unsignedInteger('party_id');
+            // $table->foreignId('party_id')->references('party_id')->on('parties')->nullable()->change();
         });
     }
 

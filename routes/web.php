@@ -102,9 +102,14 @@ Route::group(['middleware'=>'role:ballotCreator','prefix'=>'ballotAdmin'],functi
         Route::post('/voters-page-store',[VotersController::class,'Store'])
         ->name('voter.store');
 
+        Route::post('/voters-page/store-candidate-voterTable',[VotersController::class,'addToVoter'])
+        ->name('add.candidate.to.voter');
+
         //Search Bar Candidates
         Route::post('/voters-page/search',[VotersController::class,'search'])
         ->name('search.input');
+        Route::post('/voters-page/find-candidates',[VotersController::class,'find'])
+        ->name('find.candidates');
         //end of Voters Routes
 
         //Results Routes
@@ -161,7 +166,8 @@ Route::group(['middleware'=>'role:ballotCreator','prefix'=>'ballotAdmin'],functi
 
 //for Voters
 Route::group(['middleware'=>'role:voters','prefix'=>'voters'],function(){
-
+    Route::get('vote-now-page',[VotersController::class,'VoteNowPage'])
+    ->name('vote.now.page');
 
     });
 
@@ -173,8 +179,8 @@ Route::group(['middleware'=>'auth'],function(){
 // Route::get('/voters',[VotersController::class,'index'])->name('voters.index');
 
 //change it in the future
-    Route::get('vote-now-page',[VotersController::class,'VoteNowPage'])
-    ->name('vote.now.page');
+    // Route::get('vote-now-page',[VotersController::class,'VoteNowPage'])
+    // ->name('vote.now.page');
 
     Route::get('/view-ballot',function(){
         return view('ballotAdmin.ballot.view-ballot');

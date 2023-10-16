@@ -50,7 +50,9 @@
                                 </li>
                             @endif
                         @else
-                            <li class="nav-item"><a class="nav-link" href="#">Vote Now!</a></li>
+                            @can('can-vote')
+                                <li class="nav-item"><a class="nav-link" href="{{ route('vote.now.page') }}">Vote Now!</a></li>
+                            @endcan
                             <li class="nav-item dropdown">
 
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"

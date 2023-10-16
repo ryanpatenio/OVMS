@@ -199,7 +199,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ route('party.index') }}">
                     <i class="bi bi-people-fill"></i>
-                    <span>Party</span>
+                    <span>Parties</span>
                 </a>
             </li><!-- End Candidates Page Nav -->
 
