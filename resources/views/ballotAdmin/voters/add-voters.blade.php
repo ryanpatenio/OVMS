@@ -333,7 +333,7 @@
                                 $('#candidate_name').val(resp.data.candidate_name)
                                 $('#addCandidateModal').modal('show');
                             } else {
-                                msg('This Selected Candidate is already added!', 'error');
+                                msg('The Selected Candidate is already added!', 'error');
                             }
                         },
 

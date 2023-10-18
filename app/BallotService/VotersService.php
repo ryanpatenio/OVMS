@@ -124,6 +124,40 @@ class VotersService{
 
     }
 
+    public function getVotersDataById($ID){
+        $data = User::where('id',$ID)->first(['id','name','email']);
+        return response()->json([
+            'data'=>$data
+        ]);
+    }
+
+    public function updateVoters($request){
+
+        $findInCandidates = Candidates::where('user_id',$request->id)->first();
+
+            if($findInCandidates){
+                //this user is a candidates
+                //lets update this users
+
+                $updateUser = User::where('id',$request->id)
+                ->update(['name'=>$request->name]);
+
+                $updateCandidate = Candidates::where('user_id',$request->id)
+                ->update(['candidate_name'=>$request->name]);
+
+                    return $this->StatusResponse->status('success',200);
+            }else{
+                //this user is a voters only!
+                    $updateUserOnly = User::where('id',$request->id)
+                    ->update(['name'=>$request->name]);
+
+                        return $this->StatusResponse->status('success',200);
+            }
+
+        return $this->StatusResponse->status('error_find',400);
+
+    }
+
 
 }
 

@@ -106,6 +106,11 @@ public function updateBallot(BallotRequest $request){
    return $save;
 }
 
+public function destroy(Request $request){
+
+    return $this->BallotService->deleteBallot($request);
+}
+
 
 public function addPosition(Request $request){
     if(Gate::denies('manage-ballots')){

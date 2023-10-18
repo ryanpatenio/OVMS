@@ -50,9 +50,10 @@
                                 </li>
                             @endif
                         @else
-                            @can('can-vote')
+                            @canany(['can-vote', 'candidate'])
                                 <li class="nav-item"><a class="nav-link" href="{{ route('vote.now.page') }}">Vote Now!</a></li>
-                            @endcan
+                            @endcanany
+
                             <li class="nav-item dropdown">
 
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"

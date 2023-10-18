@@ -42,9 +42,8 @@
                                 <td>{{ $voter->ballot_name }}</td>
 
                                 <td>
-                                    <a href="#" type="button" class="btn btn-warning btn-sm bi bi-pencil"
-                                        data-bs-toggle="modal" data-bs-target="#updateVotersModal" id="editCandidates"
-                                        data-id="">
+                                    <a href="#" type="button" id="edit_btn"
+                                        class="btn btn-warning btn-sm bi bi-pencil" data-id="{{ $voter->id }}">
                                     </a>
                                     <a type="button" class="btn btn-danger btn-sm bi bi-trash" id="removeVoters"
                                         data-id="">
@@ -67,7 +66,7 @@
 
 
         <!--Edit Modal-->
-        <div class="modal fade modal-md" id="updateVotersModal" tabindex="-1" role="dialog"
+        <div class="modal fade modal-md" id="editVotersModal" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -78,41 +77,30 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form id="editVotersForm">
+
+                            @csrf
+                            <input type="hidden" value="" name="id" id="edit_id">
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="row mb-2">
                                             <label for="candidates edit name">Voters Name</label>
-                                            <input type="text" class="form-control" placeholder="Candidates Name..."
-                                                required value="Ryan Wong">
+                                            <input type="text" name="name" id="edit_name" class="form-control"
+                                                placeholder="Candidates Name..." required>
                                         </div>
-                                        <div class="row mb-2">
-                                            <label for="Voters Edit Email">Email</label>
-                                            <input type="email" class="form-control" placeholder="Email..." required>
-                                        </div>
-                                        <div class="row mb-2">
-                                            <label for="Voters Edit name">Temporary Password</label>
-                                            <input type="text" class="form-control bi"
-                                                placeholder="Temporary Password..." required>
-                                        </div>
-                                        <div class="row mb-2">
-                                            <label for="Voters edit Ballot Name">Ballot Name</label>
-                                            <select name="editBallotName" id="" class="form-select">
-                                                <option value="">Sun's Company</option>
-                                                <option value="">Psy Company</option>
-                                            </select>
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>
 
-                        </form>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary close" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Update</button>
+                        <input type="submit" class="btn btn-primary" value="Update">
                     </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -120,37 +108,73 @@
     @section('scripts')
         <script>
             $(document).ready(function() {
-
-
-                $(document).on('change', '#votersType', function(e) {
+                $(document).on('click', '#edit_btn', function(e) {
                     e.preventDefault();
-                    let votersDiv = $('#votersDiv');
-                    let candidatesDiv = $('#candidatesDiv');
 
-                    // if ($(this).val() == 'Voters') {
-                    //     candidatesDiv.addClass('d-none');
-                    //     votersDiv.removeClass('d-none');
-                    //     console.log($('#c').val())
-                    //     console.log($('#v').val())
-                    // }
-                    // if ($(this).val() == 'Candidates') {
-                    //     votersDiv.addClass('d-none');
-                    //     candidatesDiv.removeClass('d-none');
-                    //     console.log($('#c').val())
-                    //     console.log($('#v').val())
-                    // }
+                    //lets clear the form first
+                    $('#editVotersForm')[0].reset();
+
+                    let ID = $(this).attr('data-id');
+                    $.ajax({
+                        url: '{{ route('edit.voters') }}',
+                        method: 'post',
+                        data: {
+                            ID: ID
+                        },
+                        dataType: 'json',
+
+                        success: function(resp) {
+                            //console.log(resp)
+                            $('#edit_name').val(resp.data.name);
+                            $('#edit_email').val(resp.data.email);
+                            $('#edit_id').val(resp.data.id);
+                            $('#editVotersModal').modal('show');
+                        },
+                        error: function(xhr, status, error) {
+                            console.log(xhr.responseText)
+                        }
+
+                    });
+
+                });
+
+                $(document).on('submit', '#editVotersForm', function(e) {
+                    e.preventDefault();
+
+                    $.ajax({
+                        url: '{{ route('voters.update') }}',
+                        method: 'post',
+                        data: $(this).serialize(),
+                        dataType: 'json',
+
+                        success: function(resp) {
+                            //console.log(resp)
+                            clearFields('#editVotersForm');
+                            closeModal('#editVotersModal');
+                            if (resp.message == 'success') {
+                                message('Voters Updated Successfully!', 'success');
+                            }
+                            if (resp.message == 'error_find') {
+                                msg('Oops! Unexpected Error!', 'error');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.log(xhr.responseText)
+                        }
+
+                    });
+
                 });
 
             });
 
 
-            function show(divId) {
-                $("#" + divId).show();
-            }
 
-            function GFG_Fun() {
-                show('div');
-                $('#GFG_DOWN').text("DIV Box is visible.");
+            const clearFields = (fieldName) => {
+                $(fieldName)[0].reset();
+            }
+            const closeModal = (modalName) => {
+                $(modalName).modal('hide');
             }
         </script>
     @endsection

@@ -8,6 +8,7 @@ use App\BallotService\VotersService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\VotersAddRequest;
+use App\Http\Requests\editVotersRequest;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\addCandidateToVotersRequest;
 
@@ -45,10 +46,8 @@ class VotersController extends Controller
     }
 
     public function VoteNowPage(){
-        if(Gate::denies('can-vote')){
-            abort(403);
-        }
         return view('voters.vote-now');
+
     }
 
     public function search(Request $request){
@@ -63,6 +62,12 @@ class VotersController extends Controller
         return $this->VotersService->addCandidateAsVoters($request);
     }
 
+    public function editVoters(Request $request){
+        return $this->VotersService->getVotersDataById($request->ID);
+    }
+    public function update(editVotersRequest $request){
+        return $this->VotersService->updateVoters($request);
+    }
 
 
 

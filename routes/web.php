@@ -78,6 +78,9 @@ Route::group(['middleware'=>'role:ballotCreator','prefix'=>'ballotAdmin'],functi
         Route::post('/update-ballot',[BallotAdminController::class,'updateBallot'])
         ->name('ballot.update');
 
+        Route::post('/destroy-ballot',[BallotAdminController::class,'destroy'])
+        ->name('delete.ballot');
+
         //End of Ballot Routes
 
         //Candidates Routes
@@ -104,6 +107,10 @@ Route::group(['middleware'=>'role:ballotCreator','prefix'=>'ballotAdmin'],functi
 
         Route::post('/voters-page/store-candidate-voterTable',[VotersController::class,'addToVoter'])
         ->name('add.candidate.to.voter');
+        Route::post('/edit-voters',[VotersController::class,'editVoters'])
+        ->name('edit.voters');
+        Route::post('/update-voters',[VotersController::class,'update'])
+        ->name('voters.update');
 
         //Search Bar Candidates
         Route::post('/voters-page/search',[VotersController::class,'search'])
@@ -165,7 +172,7 @@ Route::group(['middleware'=>'role:ballotCreator','prefix'=>'ballotAdmin'],functi
 });
 
 //for Voters
-Route::group(['middleware'=>'role:voters','prefix'=>'voters'],function(){
+Route::group(['middleware'=>'role:voters|candidates','prefix'=>'voters'],function(){
     Route::get('vote-now-page',[VotersController::class,'VoteNowPage'])
     ->name('vote.now.page');
 

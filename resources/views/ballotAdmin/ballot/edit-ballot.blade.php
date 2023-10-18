@@ -291,22 +291,22 @@
                     $.each(data.position, function(key, item) {
                         $('#b-posTable').append(
                             '<tr>\
-                                                                                    <td>' +
+                                                                                        <td>' +
                             i +
                             '</td>\
-                                                                    <td>' +
+                                                                        <td>' +
                             item
                             .position_name +
                             '</td>\
-                                                                        <td>\
-                                                                    <button class="btn btn-sm btn-warning bi bi-pencil"\ id="btn-position-edit"data-id = "' +
+                                                                            <td>\
+                                                                        <button class="btn btn-sm btn-warning bi bi-pencil"\ id="btn-position-edit"data-id = "' +
                             item
                             .position_id +
                             '"></button>\
-                                                                    <button class="btn btn-sm btn-danger bi bi-trash"\ id="btn-position-remove"></button>\
-                                                                                </td>\
-                                                                            </tr>\
-                                                                            '
+                                                                        <button class="btn btn-sm btn-danger bi bi-trash"\ id="btn-position-remove"></button>\
+                                                                                    </td>\
+                                                                                </tr>\
+                                                                                '
                         );
 
                         i++;

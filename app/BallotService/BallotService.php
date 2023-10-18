@@ -57,7 +57,24 @@
       return Position::where('ballot_id',$ballot_id)->get(['position_id','position_name']);
     }
 
+    public function deleteBallot($request){
+        $ballot = Ballot::where('ballot_id',$request->ID)->first();
+        if($ballot){
+            $delete = Ballot::where('ballot_id',$request->ID)->delete();
+                if($delete){
+                    return $this->statusResponse->status('success',200);
+                }else{
+                    return $this->statusResponse->status('error_deleting',400);
+                }
+        }else{
+            return $this->statusResponse->status('error_find',400);
+        }
 
+    }
+
+    //!!!!! Important!!! All of the users that role is 4 and 3 will display in the admin side that
+    //rep for not active users! requires to delete! the Query will check all in the candidates table
+    //if this user is already exist then if not this will be mark as not active users! and also in the voters table
  }
 
 

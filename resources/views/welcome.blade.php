@@ -21,8 +21,11 @@
                                     <a class="btn btn-outline-light btn-lg px-4" href="#!">Learn More</a>
                                 @endif
                             @else
-                                <a class="btn btn-primary btn-lg px-4 me-sm-3" href="/voters">Vote Now!
-                                </a>
+                                @canany(['can-vote', 'candidate'])
+                                    <a class="btn btn-primary btn-lg px-4 me-sm-3" href="{{ route('vote.now.page') }}">Vote Now!
+                                    </a>
+                                @endcanany
+
 
                             @endguest
                         </div>
