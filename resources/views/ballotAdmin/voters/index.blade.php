@@ -46,7 +46,7 @@
                                         class="btn btn-warning btn-sm bi bi-pencil" data-id="{{ $voter->id }}">
                                     </a>
                                     <a type="button" class="btn btn-danger btn-sm bi bi-trash" id="removeVoters"
-                                        data-id="">
+                                        data-id="{{ $voter->id }}">
                                     </a>
 
 
@@ -160,6 +160,49 @@
                         },
                         error: function(xhr, status, error) {
                             console.log(xhr.responseText)
+                        }
+
+                    });
+
+                });
+                $(document).on('click', '#removeVoters', function(e) {
+                    e.preventDefault();
+                    let ID = $(this).attr('data-id');
+
+                    swal({
+                        title: "Are You Sure You Want To Delete This User?",
+
+                        icon: "info",
+                        buttons: [true, "Yes"],
+                        dangerMode: true,
+                    }).then((willconfirmed) => {
+                        if (willconfirmed) {
+                            $.ajax({
+                                url: '{{ route('delete.voters') }}',
+                                method: 'post',
+                                data: {
+                                    ID: ID
+                                },
+                                dataType: 'json',
+
+                                success: function(resp) {
+                                    //console.log(resp)
+                                    if (resp.message == 'success') {
+                                        message('Selected Voters Deleted!', 'success');
+                                    }
+                                    if (resp.message == 'error_ID') {
+                                        msg('Oops! Unexpected Error!', 'error');
+                                    }
+                                    if (resp.message == 'Error') {
+                                        msg('Oops! Unexpected Error!', 'error');
+                                    }
+                                },
+
+                                error: function(xhr, status, error) {
+                                    console.log(xhr.responseText)
+                                }
+
+                            });
                         }
 
                     });

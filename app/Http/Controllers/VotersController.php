@@ -69,6 +69,10 @@ class VotersController extends Controller
         return $this->VotersService->updateVoters($request);
     }
 
+    public function destroyVoters(Request $request){
+        return $this->VotersService->destroy($request->ID);
+    }
+
 
 
 }

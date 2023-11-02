@@ -208,6 +208,7 @@
                         $('#validation-errors').addClass('d-none');
                         //console.log(resp)
                         if (resp.message == 'success') {
+
                             msgRedirect('New Voters added Successfully!', 'success',
                                 '{{ route('voters.index') }}');
                         }
@@ -356,7 +357,8 @@
                     success: function(resp) {
                         //console.log(resp)
                         $('#validation').addClass('d-none');
-                        $('#addModalForm').modal('hide');
+                        $('#addCandidateModal').modal('hide');
+                        $('#addModalForm')[0].reset();
                         if (resp.message == 'success') {
                             msgRedirect('Candidate Successfully added as Voters', 'success',
                                 '{{ route('voters.index') }}');

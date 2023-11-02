@@ -111,6 +111,8 @@ Route::group(['middleware'=>'role:ballotCreator','prefix'=>'ballotAdmin'],functi
         ->name('edit.voters');
         Route::post('/update-voters',[VotersController::class,'update'])
         ->name('voters.update');
+        Route::post('/destroy-voters',[VotersController::class,'destroyVoters'])
+        ->name('delete.voters');
 
         //Search Bar Candidates
         Route::post('/voters-page/search',[VotersController::class,'search'])

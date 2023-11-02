@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('candidates', function (Blueprint $table) {
             //must specify the column party ex:foreignID or id()
+            //this column change into nullable means this foreign id can add data even it is nullable or no value
             $table->foreignId('party_id')->nullable()->change();
         });
     }

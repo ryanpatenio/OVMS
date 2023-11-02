@@ -158,6 +158,18 @@ class VotersService{
 
     }
 
+    public function destroy($ID){
+        if($ID != null){
+            $deleted = User::where('id','=',$ID)->delete();
+            if($deleted){
+                return $this->StatusResponse->status('success',200);
+            }
+            return $this->StatusResponse->status('error_ID',400);
+        }
+
+        return $this->StatusResponse->status('Error!',400);
+    }
+
 
 }
 
