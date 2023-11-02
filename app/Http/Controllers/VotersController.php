@@ -30,7 +30,7 @@ class VotersController extends Controller
 
 
 
-    public function AddVoters(){
+    public function AddVotersPage(){
         if(Gate::denies('manage-ballots')){
             abort(403);
         }

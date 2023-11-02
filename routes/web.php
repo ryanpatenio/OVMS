@@ -100,7 +100,7 @@ Route::group(['middleware'=>'role:ballotCreator','prefix'=>'ballotAdmin'],functi
         //Voters Routes
         Route::get('/voters-page',[VotersController::class,'VotersIndex'])
         ->name('voters.index');
-        Route::get('/voters-page-add',[VotersController::class,'AddVoters'])
+        Route::get('/voters-page-add',[VotersController::class,'AddVotersPage'])
         ->name('voters.add');
         Route::post('/voters-page-store',[VotersController::class,'Store'])
         ->name('voter.store');
