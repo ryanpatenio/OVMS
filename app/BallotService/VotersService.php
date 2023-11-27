@@ -1,7 +1,8 @@
 <?php
  namespace App\BallotService;
 
-
+ use App\Models\VotesDetails;
+ use App\Models\Votes;
  use App\Models\Candidates;
  use Illuminate\Support\Facades\Auth;
  use Illuminate\Support\Facades\DB;
@@ -169,7 +170,81 @@ class VotersService{
 
         return $this->StatusResponse->status('Error!',400);
     }
+    public function showCandidatesInVotersSide(){
+        $userBallotID = Voters::where('user_id',Auth::id())
+        ->first(['ballot_id']);
 
+        $candidates = DB::table('ballots')
+        ->select('ballots.ballot_id', 'ballots.ballot_name', 'candidates.candidate_name', 'positions.position_name', 'candidates.party_id', 'parties.party_name', 'candidates.candidate_id')
+        ->leftJoin('candidates','ballots.ballot_id','=','candidates.ballot_id')
+        ->leftJoin('positions','candidates.position_id','=','positions.position_id')
+        ->leftJoin('parties','candidates.party_id','=','parties.party_id')
+        ->where('ballots.ballot_id','=',$userBallotID->ballot_id)
+        ->get();
+
+        $groupedData = collect($candidates)->groupBy('position_name');
+        return $groupedData;
+
+    }
+
+    public function submitVotes($candidate_id){
+
+        //query that returns user voters id and ballot id
+        $voters = Voters::where('user_id',Auth::id())
+        ->first(['voters_id','ballot_id']);
+
+
+        //set the data into array to fill the Votes table
+        $arrayData = [
+            'voters_id'=> $voters->voters_id,
+            'ballot_id'=> $voters->ballot_id
+        ];
+
+         //lets also insert the new data in the VOtes Table (voters_id & Ballot_id)
+        $recordsForVoteTable = Votes::create($arrayData)->id;
+
+        if($recordsForVoteTable){
+            //check if the candidate_id is not null
+            if($candidate_id != null){
+
+                //then lets foreach insert new data into voters_details(candidate_id & vote_id)
+                    foreach ($candidate_id as $id) {
+                        VotesDetails::create(['vote_id'=>$recordsForVoteTable,'candidate_id'=>$id]);
+                    }
+
+                    //lets update the database table Voters the status will 1 if the Voters is already submitted his/her vote
+                    $updateVotersTable = Voters::where('user_id',Auth::id())
+                    ->update(['status'=>1]);
+
+                    if($updateVotersTable){
+                        //all success
+                        return $this->StatusResponse->status('success',200);
+                    }
+                    //didn't update
+                    return $this->StatusResponse->status('Error',400);
+
+                }
+                //the candidate id is null
+                return $this->StatusResponse->status('Error',400);
+        }
+        //error for $recordsForVoteTable
+        return $this->StatusResponse->status('Error',400);
+
+
+    }
+
+    public function checkIfVotedAlready(){
+        $check = Voters::where('user_id',Auth::id())
+        ->first('status');
+
+        if($check->status == '1'){
+            //already voted
+            return 1;
+        }else{
+            return 2;
+        }
+
+    }
 
 }
 

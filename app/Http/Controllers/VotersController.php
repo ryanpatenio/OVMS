@@ -46,7 +46,11 @@ class VotersController extends Controller
     }
 
     public function VoteNowPage(){
-        return view('voters.vote-now');
+        $allCandidates = $this->VotersService->showCandidatesInVotersSide();
+
+        $checkVotersStatus = $this->VotersService->checkIfVotedAlready();
+
+        return view('voters.vote-now',compact('allCandidates','checkVotersStatus'));
 
     }
 
@@ -71,6 +75,12 @@ class VotersController extends Controller
 
     public function destroyVoters(Request $request){
         return $this->VotersService->destroy($request->ID);
+    }
+
+    public function submitVotes(Request $request){
+
+        return $this->VotersService->submitVotes($request->candidate_id);
+
     }
 
 

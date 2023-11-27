@@ -106,6 +106,8 @@
     <!-- Core theme JS-->
 
     <script src=" {{ URL::asset('js/scripts.js') }}"></script>
+    <script src="{{ asset('assets/js/swal.js') }}"></script>
+    @yield('scripts')
     <script>
         function CopyToClipboard(id, btn) {
             var r = document.createRange();

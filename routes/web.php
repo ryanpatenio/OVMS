@@ -114,6 +114,8 @@ Route::group(['middleware'=>'role:ballotCreator','prefix'=>'ballotAdmin'],functi
         Route::post('/destroy-voters',[VotersController::class,'destroyVoters'])
         ->name('delete.voters');
 
+
+
         //Search Bar Candidates
         Route::post('/voters-page/search',[VotersController::class,'search'])
         ->name('search.input');
@@ -179,6 +181,9 @@ Route::group(['middleware'=>'role:voters|candidates','prefix'=>'voters'],functio
     ->name('vote.now.page');
 
     });
+
+    Route::post('/submit-vote',[VotersController::class,'submitVotes'])
+    ->name('submit.votes');
 
 });
 
