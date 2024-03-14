@@ -168,6 +168,7 @@
 
                         success: function(resp) {
                             //  console.log(resp)
+                            $('#addPartyModal').modal('hide');
                             clearError()
                             if (resp.message == 'success') {
                                 message('New Party Added Successfully!', 'success');
@@ -263,7 +264,6 @@
 
 
             });
-
 
 
             const clearError = () => {

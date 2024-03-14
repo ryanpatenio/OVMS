@@ -189,7 +189,7 @@ class VotersService{
 
     public function submitVotes($candidate_id){
 
-        //query that returns user voters id and ballot id
+        //query that returns user (voters) id and ballot id
         $voters = Voters::where('user_id',Auth::id())
         ->first(['voters_id','ballot_id']);
 

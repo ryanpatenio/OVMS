@@ -31,7 +31,7 @@ class RedirectIfAuthenticated
                 return redirect()->route('ballot.index');
                }
                if(Auth::user()->role == 3 || Auth::user()->role == 4){
-                //ballot creator
+                //Voters
                 return redirect()->route('vote.now.page');
                }
                if(Auth::user()->role == 0){

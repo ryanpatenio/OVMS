@@ -17,6 +17,7 @@ class VotersController extends Controller
 {
     private $ballotService,$VotersService;
 
+    /*  Note All Code found in App/BallotService/VotersService.php              */
     public function __construct(BallotService $ballot,VotersService $voters){
         $this->ballotService = $ballot;
         $this->VotersService = $voters;
@@ -44,8 +45,11 @@ class VotersController extends Controller
         }
         return $this->VotersService->addVoters($request);
     }
-
+//this vote Now Page is Exclusive only of the Voters 
     public function VoteNowPage(){
+
+        
+        //
         $allCandidates = $this->VotersService->showCandidatesInVotersSide();
 
         $checkVotersStatus = $this->VotersService->checkIfVotedAlready();

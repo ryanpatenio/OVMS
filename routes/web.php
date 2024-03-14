@@ -25,6 +25,11 @@ use App\Http\Controllers\BallotAdminController;
 //check? authenticated users || check what role?
 Route::group(['middleware'=>'auth'],function(){
 
+
+    //group route for admin and role
+    //role or middleware found in PATH---App/http/middleware/AdminMiddleware.php
+    //role == 1
+    //Note This Role name "Role" was registered in Kernel PATH - App/kernel.php in the Bottom
     Route::group(['middleware'=>'role:admin','prefix'=>'admin'],function(){
 
             Route::get('/dashboard-admin',[AdminController::class,'index'])->name('admin.dashboard');
@@ -60,6 +65,8 @@ Route::group(['middleware'=>'auth'],function(){
     });
 
     //for Ballot Creators
+    //using middleware Path- app/http/middleware/AdminMiddleware.php
+    //role == 2
 Route::group(['middleware'=>'role:ballotCreator','prefix'=>'ballotAdmin'],function(){
 
         Route::get('/ballot-dashboard',[BallotAdminController::class,'index'])
@@ -176,6 +183,8 @@ Route::group(['middleware'=>'role:ballotCreator','prefix'=>'ballotAdmin'],functi
 });
 
 //for Voters
+//only Voters Can access this page
+//role = 3 *database Role
 Route::group(['middleware'=>'role:voters|candidates','prefix'=>'voters'],function(){
     Route::get('vote-now-page',[VotersController::class,'VoteNowPage'])
     ->name('vote.now.page');

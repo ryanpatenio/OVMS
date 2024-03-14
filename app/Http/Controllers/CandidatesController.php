@@ -13,15 +13,20 @@ use App\Http\Requests\CandidateUpdateRequest;
 
 class CandidatesController extends Controller
 {
-
+        /*  Note All the Code Found in App/BallotService/BallotService.php         */   
+        /* for Status Response Found in App/BallotService/StatusRepository.php  */  
     private $CandidatesService,$StatusResponse;
 
     public function __construct(CandidatesService $CandidatesService,StatusRepository $StatusResponse){
+
+
         $this->CandidatesService = $CandidatesService;
         $this->StatusResponse = $StatusResponse;
 
 
     }
+
+    //home page of Candidates
     public function MyCandidatesIndex(){
         if(Gate::denies('manage-ballots')){
             abort(403);
@@ -30,9 +35,11 @@ class CandidatesController extends Controller
         $candidates = $this->CandidatesService->CandidatesData();
         $ballots = $this->CandidatesService->getAllBallotData();
 
+        //return 2 Arrays
         return view('ballotAdmin.candidates.index',compact('candidates','ballots'));
     }
 
+    //this function will search all position data from specific ballot id
     public function GetPositionByBallotId(Request $request){
         if(Gate::denies('manage-ballots')){
             abort(403);

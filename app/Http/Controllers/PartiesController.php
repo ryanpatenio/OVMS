@@ -13,11 +13,13 @@ class PartiesController extends Controller
     //
     private $PartiesService;
 
+    /*  Note All the Code Found in the App/BallotService/PartiesService.php            */
+
     public function __construct(PartiesService $Service){
         $this->PartiesService = $Service;
     }
 
-
+    //Party Homepage
     public function PartyIndex(){
         $ballotData = $this->PartiesService::ShowBallot();
         $parties = $this->PartiesService::ShowParties();
