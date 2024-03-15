@@ -138,3 +138,6 @@
 </body>
 
 </html>
+
+@viteReactRefresh
+@vite("reactapp\src\index.jsx");

@@ -174,64 +174,7 @@
                     </div>
                 </div>
             </div>
-            <div class="text-center mt-2 mb-4">
-                <h2 class="fw-bolder">What we offer?</h2>
-            </div>
-            <div class="row gx-5">
-                <div class="col-lg-4 mb-5">
-                    <div class="card h-100 shadow border-0">
-                        <img class="card-img-top"
-                            src="https://tse4.mm.bing.net/th?id=OIP.ZA0EDtB9oVe1Y182AHh6cQHaE8&pid=Api&P=0&h=220"
-                            alt="..." />
-                        <div class="card-body p-4">
-                            <div class="badge bg-primary bg-gradient rounded-pill mb-2">Features!</div>
-                            <a class="text-decoration-none link-dark stretched-link" href="#!">
-                                <h5 class="card-title mb-3">Security!</h5>
-                            </a>
-                            <p class="card-text mb-0">A reliable Online Voting WebSite! We secure all the Data and Privacy
-                                of
-                                the user!</p>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="col-lg-4 mb-5">
-                    <div class="card h-100 shadow border-0">
-                        <img class="card-img-top"
-                            src="https://media.istockphoto.com/photos/wave-of-coloured-lights-picture-id182197837?k=6&m=182197837&s=612x612&w=0&h=ZcTQCAKgyg5ukYOuW9CQLqJGDh6lfhBGFcx2KOAAoA4=
-                            "
-                            alt="..." />
-                        <div class="card-body p-4">
-                            <div class="badge bg-primary bg-gradient rounded-pill mb-2">Features!</div>
-                            <a class="text-decoration-none link-dark stretched-link" href="#!">
-                                <h5 class="card-title mb-3">Electronic Voting</h5>
-                            </a>
-                            <p class="card-text mb-0">A fast Phased Voting Website that you can get the result faster and
-                                stays
-                                protected from double Voting!</p>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="col-lg-4 mb-5">
-                    <div class="card h-100 shadow border-0">
-                        <img class="card-img-top"
-                            src="https://www.westend61.de/images/0001186009pw/smiling-man-using-cell-phone-in-the-city-DIGF06980.jpg"
-                            alt="..." />
-                        <div class="card-body p-4">
-                            <div class="badge bg-primary bg-gradient rounded-pill mb-2">Features!</div>
-                            <a class="text-decoration-none link-dark stretched-link" href="#!">
-                                <h5 class="card-title mb-3">Easy to Vote!
-                                </h5>
-                            </a>
-                            <p class="card-text mb-0">The Voters can easily access the Web application and it is responsive
-                                Web app that can use in any Android or Apple devices!.
-                            </p>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
+            <div id="offer"></div>
             <!-- Call to action-->
             <aside class="bg-primary bg-gradient rounded-3 p-4 p-sm-5 mt-5">
                 <div
