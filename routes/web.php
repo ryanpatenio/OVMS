@@ -7,7 +7,7 @@ use App\Http\Controllers\VotersController;
 use App\Http\Controllers\PartiesController;
 use App\Http\Controllers\CandidatesController;
 use App\Http\Controllers\BallotAdminController;
-
+use App\Http\Controllers\tokenController;
 
 
 /*
@@ -226,5 +226,7 @@ Route::group(['middleware'=>'auth'],function(){
     Route::get('/contact-us',function(){
         return view('contact');
     });
+
+    Route::get("/verifyUser",[tokenController::class,"verifyUser"]);
 
 Auth::routes();

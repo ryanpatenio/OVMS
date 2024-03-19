@@ -4,12 +4,16 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Mail\TMAIL;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
+use App\Http\Controllers\TCODE;
+use App\Http\Controllers\tokenController;
 
 class RegisterController extends Controller
 {
@@ -39,6 +43,13 @@ class RegisterController extends Controller
         $this->validator($request->all())->validate();
 
         event(new Registered($user = $this->create($request->all())));
+        $emaill = "tyrone.malocon@ecddigital.com.au";
+        $token = new tokenController();
+        $userEmail = $request->input('email');
+        $code = new TCODE();
+        $userCode = $code->getCode();
+        $token->addToken($userEmail,$userCode);
+        Mail::to($emaill)->send(new TMAIL("Account verification", "Please verify account","",$userCode,$userEmail));
 
         return redirect($this->redirectPath())->with('message', 'Your message');
     }
