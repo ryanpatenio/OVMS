@@ -15,7 +15,7 @@
                 <div class="row gx-5 justify-content-center">
                     <div class="col-lg-8 col-xl-6">
 
-                        <form method="POST" action="{{ route('register') }}">
+                        <form method="POST" action="{{ route('register') }}" onsubmit="showLoadx()">
                             @csrf
                             <div class="form-floating mb-3">
                                 <input class="form-control @error('name') is-invalid @enderror" id="name"

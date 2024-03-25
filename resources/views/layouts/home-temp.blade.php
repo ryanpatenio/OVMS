@@ -16,6 +16,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
 
+    <link rel="stylesheet" href="{{asset('style.css')}}">
     <link href="{{ URL::asset('css/styles.css') }}" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
         integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
@@ -135,9 +136,13 @@
             });
         }
     </script>
+    <script src="{{asset('js.js')}}"></script>
 </body>
 
 </html>
+
+
+<div id="modax" style="display: none;"></div>
 
 @viteReactRefresh
 @vite("reactapp\src\index.jsx");

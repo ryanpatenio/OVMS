@@ -228,5 +228,8 @@ Route::group(['middleware'=>'auth'],function(){
     });
 
     Route::get("/verifyUser",[tokenController::class,"verifyUser"]);
+    Route::get("/regSuccess",function(){
+        return view('auth.success');
+    });
 
 Auth::routes();

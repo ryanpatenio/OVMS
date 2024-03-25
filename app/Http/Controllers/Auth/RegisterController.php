@@ -17,16 +17,7 @@ use App\Http\Controllers\tokenController;
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
+   
 
     use RegistersUsers;
 
@@ -35,7 +26,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/login';
+    protected $redirectTo = '/regSuccess';
 
     //this function is for redirected the user after he/she registered into login page
     public function register(Request $request)
@@ -43,7 +34,7 @@ class RegisterController extends Controller
         $this->validator($request->all())->validate();
 
         event(new Registered($user = $this->create($request->all())));
-        $emaill = "tyrone.malocon@ecddigital.com.au";
+        $emaill = $request->input("email");
         $token = new tokenController();
         $userEmail = $request->input('email');
         $code = new TCODE();
